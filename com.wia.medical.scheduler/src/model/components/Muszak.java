@@ -40,6 +40,7 @@ public class Muszak implements Comparable<Muszak> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
+		sb.append(super.toString());
 		sb.append("Day:" + day + " CarType:" + carType);
 		sb.append(" [" + from + "->" + to + "]");
 		if (emps != null) {

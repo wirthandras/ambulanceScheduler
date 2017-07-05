@@ -27,6 +27,6 @@ public class CarRequiredJobs {
 	}
 
 	public static Set<IJob> get(ECarType type) {
-		return assign.get(type);
+		return new HashSet<IJob>(assign.get(type));
 	}
 }

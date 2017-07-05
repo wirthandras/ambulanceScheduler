@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import jobs.IJob;
 import jobs.JobFactory;
@@ -18,12 +19,17 @@ public class ReadWorkers {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line = null;
 			IJob job = null;
+			
+			Random r = new Random();
+			
 			while ((line = br.readLine()) != null) {
 				if (line.contains(IJob.class.getSimpleName())) {
 					String type = line.replace(IJob.class.getSimpleName(), "");
 					job = JobFactory.getJob(type);
-				} else {					
-					emps.add(new Employee(line, job, false));
+				} else {
+					boolean is24Service = r.nextBoolean();
+					
+					emps.add(new Employee(line, job, is24Service));
 				}
 			}
 			br.close();

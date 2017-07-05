@@ -60,15 +60,29 @@ public class AlgorithmPairing {
 	}
 
 	private void assignEmpToMuszak(MuszakLista muszakok) {
-		for (Muszak m : muszakok.getMuszakok()) {
+		List<Muszak> msz = muszakok.getMuszakok();
+		for (Muszak m : msz) {
 
 			Set<IJob> missingJobs = m.missingJob();
 
 			for (IJob j : missingJobs) {
+
 				Employee emp = getAnEmployee(j, m);
+
 				if (emp != null) {
 					m.addEmployee(emp);
 					emp.addMuszak(m);
+					if (emp.isService24h()) {
+						Muszak m2 = muszakok.getAdjacentAfter(m);
+						if (m2 != null) {
+							Random r = new Random();
+							if (r.nextBoolean() && m2.missingJob().contains(emp.getJob()) && !emp.getHolidays().contains(m2.getDay())) {
+								m2.addEmployee(emp);
+								emp.addMuszak(m2);
+							}
+
+						}
+					}
 				}
 			}
 		}

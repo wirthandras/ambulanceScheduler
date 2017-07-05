@@ -46,6 +46,7 @@ public class Employee implements Comparable<Employee> {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(name);
+		sb.append("," + isService24h());
 		sb.append("(" + sumWorkingHours() + ")");
 		// sb.append(job);
 		return sb.toString();
@@ -63,10 +64,19 @@ public class Employee implements Comparable<Employee> {
 		return muszakok;
 	}
 
-	public Map<Integer, Muszak> getMuszakokMap() {
-		Map<Integer, Muszak> map = new HashMap<Integer, Muszak>();
+	public Map<Integer, List<Muszak>> getMuszakokMap() {
+		Map<Integer, List<Muszak>> map = new HashMap<Integer, List<Muszak>>();
 		for (Muszak m : muszakok) {
-			map.put(m.getDay(), m);
+
+			int day = m.getDay();
+
+			if (map.get(day) != null) {
+				map.get(day).add(m);
+			} else {
+				List<Muszak> list = new ArrayList<Muszak>();
+				list.add(m);
+				map.put(day, list);
+			}
 		}
 		return map;
 	}
@@ -75,6 +85,9 @@ public class Employee implements Comparable<Employee> {
 		Set<Integer> ms = new HashSet<Integer>();
 		for (Muszak m : muszakok) {
 			ms.add(m.getDay());
+			if(m.isNight()) {
+				ms.add(m.getDay() + 1);
+			}
 		}
 		return ms;
 	}
@@ -183,7 +196,7 @@ public class Employee implements Comparable<Employee> {
 			return true;
 		}
 	}
-	
+
 	@Override
 	public int compareTo(Employee other) {
 		return this.name.compareTo(other.getName());
