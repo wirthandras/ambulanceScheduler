@@ -27,6 +27,11 @@ public class Model {
 	private MuszakLista muszakok;
 	private List<Car> cars;
 	private List<Employee> employees;
+	private AlgorithmPairing alg;
+	
+	public AlgorithmPairing getAlg() {
+		return alg;
+	}
 
 	public Model() {
 
@@ -44,7 +49,7 @@ public class Model {
 
 		randomizeHolidays();
 
-		AlgorithmPairing alg = new AlgorithmPairing();
+		alg = new AlgorithmPairing();
 		alg.execute(muszakok, cars, employees);
 
 		for (Employee e : employees) {
@@ -53,7 +58,7 @@ public class Model {
 			System.out.println(e.printHolidays());
 			System.out.println(e.printMuszakok());
 		}
-		
+
 		createExcelFile(daysInMonth, alg.getSeparatedEmployees());
 	}
 
@@ -110,7 +115,7 @@ public class Model {
 			emp.addHolidays(holidays);
 		}
 	}
-	
+
 	private void createExcelFile(int daysInMonth, Map<IJob, List<Employee>> employees) {
 		ExcelGenerator gen = new ExcelGenerator();
 		HSSFWorkbook workbook = gen.generate(daysInMonth, employees);
@@ -119,6 +124,10 @@ public class Model {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public List<Employee> getEmployees() {
+		return employees;
 	}
 
 }

@@ -1,7 +1,9 @@
 package application;
 
+import controller.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -26,8 +28,20 @@ public class Main extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 			
+			
+			
 			Model m = new Model();
 			System.out.println(m.toString());
+			
+			
+			
+
+//			Parent root = (Parent)loader.load();          
+			MainController controller = loader.<MainController>getController();
+			controller.setModel(m);
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

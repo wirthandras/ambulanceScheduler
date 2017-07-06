@@ -11,9 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.control.TreeItem;
 import jobs.IJob;
 
-public class Employee implements Comparable<Employee> {
+public class Employee extends TreeItem<String> implements Comparable<Employee> {
 
 	private static final int maxInMonth = 168;
 	private static final int holidayInHour = 8;
@@ -44,12 +45,7 @@ public class Employee implements Comparable<Employee> {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(name);
-		sb.append("," + isService24h());
-		sb.append("(" + sumWorkingHours() + ")");
-		// sb.append(job);
-		return sb.toString();
+		return name;
 	}
 
 	public boolean isService24h() {
@@ -85,7 +81,7 @@ public class Employee implements Comparable<Employee> {
 		Set<Integer> ms = new HashSet<Integer>();
 		for (Muszak m : muszakok) {
 			ms.add(m.getDay());
-			if(m.isNight()) {
+			if (m.isNight()) {
 				ms.add(m.getDay() + 1);
 			}
 		}
