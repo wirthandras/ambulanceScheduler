@@ -10,7 +10,7 @@
    <children>
       <TabPane layoutX="14.0" layoutY="14.0" prefHeight="605.0" prefWidth="785.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab text="Untitled Tab 1">
+          <Tab text="Alkalmazottak">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="425.0" prefWidth="651.0">
                      <children>
@@ -21,14 +21,18 @@
                                     <TreeView fx:id="treeview" layoutX="14.0" layoutY="14.0" prefHeight="523.0" prefWidth="370.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                                  </children>
                               </AnchorPane>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="483.0" prefWidth="348.0" />
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="483.0" prefWidth="348.0">
+                                 <children>
+                                    <CheckBox fx:id="h24" layoutX="102.0" layoutY="44.0" mnemonicParsing="false" text="24 H" />
+                                    <Pane fx:id="pane" layoutX="37.0" layoutY="72.0" prefHeight="200.0" prefWidth="200.0" />
+                                 </children></AnchorPane>
                           </items>
                         </SplitPane>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Untitled Tab 2">
+          <Tab text="Sorsolas">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>

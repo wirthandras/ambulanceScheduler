@@ -28,7 +28,7 @@ public class Model {
 	private List<Car> cars;
 	private List<Employee> employees;
 	private AlgorithmPairing alg;
-	
+
 	public AlgorithmPairing getAlg() {
 		return alg;
 	}
@@ -128,6 +128,15 @@ public class Model {
 
 	public List<Employee> getEmployees() {
 		return employees;
+	}
+
+	public Employee getEmployee(String name) {
+		for (Employee e : employees) {
+			if (e.getName().equals(name)) {
+				return e;
+			}
+		}
+		return null;
 	}
 
 }
