@@ -198,4 +198,8 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 		return this.name.compareTo(other.getName());
 	}
 
+	public void clearShifts() {
+		muszakok.clear();
+	}
+
 }

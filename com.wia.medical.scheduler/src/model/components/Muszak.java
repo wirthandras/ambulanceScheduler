@@ -87,4 +87,8 @@ public class Muszak implements Comparable<Muszak> {
 		}
 	}
 
+	public void clearAllEmp() {
+		emps.clear();
+	}
+
 }

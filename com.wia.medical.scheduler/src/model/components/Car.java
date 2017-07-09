@@ -4,10 +4,12 @@ public class Car {
 
 	private String identifier;
 	private ECarType type;
+	private String typeText;
 
 	public Car(String identifier, ECarType type) {
 		this.identifier = identifier;
 		this.type = type;
+		this.typeText = this.type.toString();
 	}
 
 	public String getIdentifier() {
@@ -22,6 +24,10 @@ public class Car {
 	public String toString() {
 
 		return identifier + "," + type;
+	}
+
+	public String getTypeText() {
+		return typeText;
 	}
 
 }

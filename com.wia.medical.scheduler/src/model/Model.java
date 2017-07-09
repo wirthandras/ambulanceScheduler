@@ -21,6 +21,7 @@ import jobs.IJob;
 import model.components.Car;
 import model.components.ECarType;
 import model.components.Employee;
+import model.components.Muszak;
 
 public class Model {
 
@@ -28,6 +29,7 @@ public class Model {
 	private List<Car> cars;
 	private List<Employee> employees;
 	private AlgorithmPairing alg;
+	private int daysInMonth;
 
 	public AlgorithmPairing getAlg() {
 		return alg;
@@ -37,42 +39,14 @@ public class Model {
 
 		Calendar mycal = new GregorianCalendar();
 
-		int daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
 
 		cars = new ArrayList<>();
 
-		// generateCars();
 		generateRealCars();
 
 		employees = ReadWorkers.readEmployees(new File("workers"));
 		muszakok = new MuszakLista(daysInMonth);
-
-		randomizeHolidays();
-
-		alg = new AlgorithmPairing();
-		alg.execute(muszakok, cars, employees);
-
-		for (Employee e : employees) {
-
-			System.out.println(e);
-			System.out.println(e.printHolidays());
-			System.out.println(e.printMuszakok());
-		}
-
-		createExcelFile(daysInMonth, alg.getSeparatedEmployees());
-	}
-
-	private void generateCars() {
-
-		int minCar = 3;
-
-		Random r = new Random();
-		int rNumberCar = r.nextInt(2) + minCar;
-		for (int i = 0; i < rNumberCar; i++) {
-
-			cars.add(new Car("HHH-00" + i, ECarType.ESETKOCSI));
-		}
-
 	}
 
 	private void generateRealCars() {
@@ -81,6 +55,12 @@ public class Model {
 		cars.add(new Car("HHH-002", ECarType.ESETKOCSI));
 		cars.add(new Car("HHH-003", ECarType.ESETKOCSI));
 		cars.add(new Car("HHH-004", ECarType.ROHAMKOCSI));
+		cars.add(new Car("HHH-001", ECarType.ESETKOCSI));
+		cars.add(new Car("HHH-002", ECarType.ESETKOCSI));
+	}
+	
+	public List<Car> getCars() {
+		return cars;
 	}
 
 	@Override
@@ -137,6 +117,31 @@ public class Model {
 			}
 		}
 		return null;
+	}
+
+	public void clear() {
+		randomizeHolidays();
+
+		alg = new AlgorithmPairing();
+		
+		for (Employee e : employees) {
+			e.clearShifts();
+		}
+		
+		for(Muszak m : muszakok.getMuszakok()) {
+			m.clearAllEmp();
+		}
+	}
+
+	public void generate() {
+		randomizeHolidays();
+
+		alg = new AlgorithmPairing();
+		alg.execute(muszakok, cars, employees);
+	}
+
+	public void save() {
+		createExcelFile(daysInMonth, alg.getSeparatedEmployees());
 	}
 
 }

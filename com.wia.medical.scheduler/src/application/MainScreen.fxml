@@ -34,9 +34,28 @@
           </Tab>
           <Tab text="Sorsolas">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnClear" layoutX="31.0" layoutY="31.0" mnemonicParsing="false" onAction="#clear" text="Törlés" />
+                        <Button fx:id="btnGenerate" layoutX="86.0" layoutY="31.0" mnemonicParsing="false" onAction="#generate" text="Generálás" />
+                        <Button fx:id="btnSave" layoutX="163.0" layoutY="31.0" mnemonicParsing="false" onAction="#save" text="Mentés" />
+                     </children></AnchorPane>
             </content>
           </Tab>
+            <Tab text="Autók">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="carTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
    </children>

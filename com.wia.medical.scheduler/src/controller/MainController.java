@@ -1,12 +1,15 @@
 package controller;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -14,13 +17,17 @@ import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 import jobs.AbstractJob;
 import jobs.IJob;
 import model.Model;
+import model.components.Car;
 import model.components.Employee;
 
 public class MainController {
@@ -38,18 +45,56 @@ public class MainController {
 
 	private DatePicker picker;
 
+	@FXML
+	private TableView<Car> carTable;
+
 	public void setModel(Model m) {
 		this.m = m;
 
+		drawTreeView();
+		drawTable();
+		//
+		addListeners();
+	}
+
+	private void drawTable() {
+
+		TableColumn<Car, String> firstNameCol = new TableColumn<Car, String>("ID");
+		firstNameCol.setCellValueFactory(new PropertyValueFactory<Car, String>("identifier"));
+		TableColumn<Car, String> secondNameCol = new TableColumn<Car, String>("Type");
+		secondNameCol.setCellValueFactory(new PropertyValueFactory<Car, String>("typeText"));
+		carTable.getColumns().clear();
+		carTable.getColumns().add(firstNameCol);
+		carTable.getColumns().add(secondNameCol);
+		carTable.getItems().clear();
+		carTable.getItems().addAll(m.getCars());
+	}
+
+	private void drawTreeView() {
+		treeview.setShowRoot(false);
+
 		Alkalmazottak alk = new Alkalmazottak();
 
-		Map<IJob, List<Employee>> map = m.getAlg().getSeparatedEmployees();
+		List<Employee> employees = m.getEmployees();
 
-		for (IJob job : map.keySet()) {
+		Map<IJob, List<Employee>> employeesMap = new HashMap<IJob, List<Employee>>();
+		for (Employee e : employees) {
+			List<Employee> subList = employeesMap.get(e.getJob());
+			if (subList != null) {
+				subList.add(e);
+			} else {
+				List<Employee> emps = new ArrayList<Employee>();
+				emps.add(e);
+				employeesMap.put(e.getJob(), emps);
+			}
+
+		}
+
+		for (IJob job : employeesMap.keySet()) {
 			TreeItem<TreeItem<String>> item = new TreeItem<TreeItem<String>>();
 			item.setValue((AbstractJob) job);
 			alk.getChildren().add(item);
-			List<Employee> empList = map.get(job);
+			List<Employee> empList = employeesMap.get(job);
 			for (Employee e : empList) {
 				TreeItem<TreeItem<String>> subItem = new TreeItem<TreeItem<String>>();
 				subItem.setValue(e);
@@ -59,7 +104,9 @@ public class MainController {
 		}
 
 		treeview.setRoot(alk);
-		treeview.setShowRoot(false);
+	}
+
+	private void addListeners() {
 		treeview.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
 
 			@Override
@@ -73,14 +120,13 @@ public class MainController {
 			}
 
 		});
-
-		//
 	}
 
 	@FXML
 	public void initialize() {
 		picker = new DatePicker(LocalDate.now());
 		datePickerSkin = new DatePickerSkin(picker);
+
 	}
 
 	private void setupGuiAccordingToEmployee(Employee emp) {
@@ -119,6 +165,21 @@ public class MainController {
 			}
 		};
 		return dayCellFactory;
+	}
+
+	@FXML
+	private void save() {
+		m.save();
+	}
+
+	@FXML
+	private void generate() {
+		m.generate();
+	}
+
+	@FXML
+	private void clear() {
+		m.clear();
 	}
 
 }
