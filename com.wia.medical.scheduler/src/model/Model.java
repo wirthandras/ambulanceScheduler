@@ -58,7 +58,7 @@ public class Model {
 		cars.add(new Car("HHH-001", ECarType.ESETKOCSI));
 		cars.add(new Car("HHH-002", ECarType.ESETKOCSI));
 	}
-	
+
 	public List<Car> getCars() {
 		return cars;
 	}
@@ -123,12 +123,12 @@ public class Model {
 		randomizeHolidays();
 
 		alg = new AlgorithmPairing();
-		
+
 		for (Employee e : employees) {
 			e.clearShifts();
 		}
-		
-		for(Muszak m : muszakok.getMuszakok()) {
+
+		for (Muszak m : muszakok.getMuszakok()) {
 			m.clearAllEmp();
 		}
 	}
@@ -142,6 +142,10 @@ public class Model {
 
 	public void save() {
 		createExcelFile(daysInMonth, alg.getSeparatedEmployees());
+	}
+
+	public MuszakLista getMuszakLista() {
+		return muszakok;
 	}
 
 }

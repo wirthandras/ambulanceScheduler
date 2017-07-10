@@ -9,7 +9,6 @@ import java.util.Set;
 
 import com.sun.javafx.scene.control.skin.DatePickerSkin;
 
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -20,6 +19,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableView;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
@@ -27,8 +27,11 @@ import javafx.util.Callback;
 import jobs.AbstractJob;
 import jobs.IJob;
 import model.Model;
+import model.MuszakLista;
 import model.components.Car;
+import model.components.Day;
 import model.components.Employee;
+import model.components.Muszak;
 
 public class MainController {
 
@@ -48,10 +51,14 @@ public class MainController {
 	@FXML
 	private TableView<Car> carTable;
 
+	@FXML
+	private TreeView<TreeItem<String>> treeviewShifts;
+
 	public void setModel(Model m) {
 		this.m = m;
 
 		drawTreeView();
+		drawTreeViewShifts();
 		drawTable();
 		//
 		addListeners();
@@ -104,6 +111,43 @@ public class MainController {
 		}
 
 		treeview.setRoot(alk);
+	}
+
+	private void drawTreeViewShifts() {
+		treeviewShifts.setShowRoot(false);
+
+		Alkalmazottak alk = new Alkalmazottak();
+
+		MuszakLista shifts = m.getMuszakLista();
+
+		Map<Integer, List<Muszak>> shiftList = new HashMap<Integer, List<Muszak>>();
+
+		for (Muszak shift : shifts.getMuszakok()) {
+			List<Muszak> subList = shiftList.get(shift.getDay());
+			if (subList != null) {
+				subList.add(shift);
+			} else {
+				subList = new ArrayList<Muszak>();
+				subList.add(shift);
+				shiftList.put(shift.getDay(), subList);
+			}
+
+		}
+
+		for (Integer day : shiftList.keySet()) {
+			TreeItem<TreeItem<String>> item = new TreeItem<TreeItem<String>>();
+			item.setValue(new Day(day));
+			alk.getChildren().add(item);
+			List<Muszak> subShiftList = shiftList.get(day);
+			for (Muszak e : subShiftList) {
+				TreeItem<TreeItem<String>> subItem = new TreeItem<TreeItem<String>>();
+				subItem.setValue(e);
+				item.getChildren().add(subItem);
+
+			}
+		}
+
+		treeviewShifts.setRoot(alk);
 	}
 
 	private void addListeners() {
@@ -180,6 +224,25 @@ public class MainController {
 	@FXML
 	private void clear() {
 		m.clear();
+	}
+
+	@FXML
+	private void openAll() {
+		expand(treeviewShifts.getRoot(), true);
+	}
+
+	private void expand(TreeItem<TreeItem<String>> item, boolean expand) {
+		item.setExpanded(expand);
+		for (TreeItem<TreeItem<String>> subItem : item.getChildren()) {
+			expand(subItem, expand);
+		}
+	}
+
+	@FXML
+	private void closeAll() {
+		for(TreeItem<TreeItem<String>> item : treeviewShifts.getRoot().getChildren()) {
+			expand(item, false);
+		}
 	}
 
 }

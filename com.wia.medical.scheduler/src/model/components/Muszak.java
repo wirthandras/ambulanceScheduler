@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javafx.scene.control.TreeItem;
 import jobs.IJob;
 
-public class Muszak implements Comparable<Muszak> {
+public class Muszak extends TreeItem<String> implements Comparable<Muszak> {
 
 	/**
 	 * Day in Month according to Gregorian calendar.
@@ -40,13 +41,7 @@ public class Muszak implements Comparable<Muszak> {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(super.toString());
-		sb.append("Day:" + day + " CarType:" + carType);
-		sb.append(" [" + from + "->" + to + "]");
-		if (emps != null) {
-			sb.append("Emps:  " + emps.toString());
-		}
-		sb.append("\n");
+		sb.append(" Müszak[" + from + "->" + to + "]");
 		return sb.toString();
 	}
 
