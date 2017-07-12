@@ -11,21 +11,30 @@ import com.sun.javafx.scene.control.skin.DatePickerSkin;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TreeItem;
-import javafx.scene.control.TreeTableView;
 import javafx.scene.control.TreeView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import jobs.AbstractJob;
 import jobs.IJob;
+import jobs.JobFactory;
 import model.Model;
 import model.MuszakLista;
 import model.components.Car;
@@ -35,6 +44,7 @@ import model.components.Muszak;
 
 public class MainController {
 
+	private Stage primaryStage;
 	private Model m;
 
 	@FXML
@@ -54,7 +64,16 @@ public class MainController {
 	@FXML
 	private TreeView<TreeItem<String>> treeviewShifts;
 
-	public void setModel(Model m) {
+	@FXML
+	private ChoiceBox<AbstractJob> choiceJobs;
+
+	@FXML
+	private TextField inputEmployeeName;
+
+	@FXML
+	private CheckBox checkBox24hInput;
+
+	public void setData(Model m, Stage primaryStage) {
 		this.m = m;
 
 		drawTreeView();
@@ -156,11 +175,10 @@ public class MainController {
 			@Override
 			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 				TreeItem<TreeItem<String>> treeItem = (TreeItem<TreeItem<String>>) newValue;
-				if (treeItem.getValue() instanceof Employee) {
+				if (treeItem != null && treeItem.getValue() instanceof Employee) {
 					Employee emp = (Employee) treeItem.getValue();
 					setupGuiAccordingToEmployee(emp);
 				}
-
 			}
 
 		});
@@ -171,6 +189,10 @@ public class MainController {
 		picker = new DatePicker(LocalDate.now());
 		datePickerSkin = new DatePickerSkin(picker);
 
+		ObservableList<AbstractJob> jobs = FXCollections.observableArrayList(JobFactory.apolo, JobFactory.doctor,
+				JobFactory.mento, JobFactory.driver, JobFactory.szakapolo);
+
+		choiceJobs.setItems(jobs);
 	}
 
 	private void setupGuiAccordingToEmployee(Employee emp) {
@@ -240,9 +262,40 @@ public class MainController {
 
 	@FXML
 	private void closeAll() {
-		for(TreeItem<TreeItem<String>> item : treeviewShifts.getRoot().getChildren()) {
+		for (TreeItem<TreeItem<String>> item : treeviewShifts.getRoot().getChildren()) {
 			expand(item, false);
 		}
+	}
+
+	@FXML
+	private void pickUpNewEmployee() {
+		String empName = inputEmployeeName.getText();
+		if (!empName.equals("")) {
+			IJob job = choiceJobs.getValue();
+			if (job != null) {
+				boolean is24h = checkBox24hInput.isSelected();
+				Employee emp = new Employee(empName, job, is24h);
+				m.addNewEmployee(emp);
+
+				// redraw employee tree
+				drawTreeView();
+			} else {
+				showPopup("Kérem válasszon munkát!");
+			}
+		} else {
+			showPopup("Név nincs kitöltve");
+		}
+	}
+
+	private void showPopup(String message) {
+		final Stage dialog = new Stage();
+		dialog.initModality(Modality.APPLICATION_MODAL);
+		dialog.initOwner(this.primaryStage);
+		VBox dialogVbox = new VBox(20);
+		dialogVbox.getChildren().add(new Text(message));
+		Scene dialogScene = new Scene(dialogVbox, 300, 200);
+		dialog.setScene(dialogScene);
+		dialog.show();
 	}
 
 }

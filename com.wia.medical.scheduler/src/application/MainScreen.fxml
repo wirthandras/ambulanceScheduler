@@ -32,26 +32,16 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Sorsolas">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <Button fx:id="btnClear" layoutX="31.0" layoutY="31.0" mnemonicParsing="false" onAction="#clear" text="Törlés" />
-                        <Button fx:id="btnGenerate" layoutX="86.0" layoutY="31.0" mnemonicParsing="false" onAction="#generate" text="Generálás" />
-                        <Button fx:id="btnSave" layoutX="163.0" layoutY="31.0" mnemonicParsing="false" onAction="#save" text="Mentés" />
-                     </children></AnchorPane>
-            </content>
-          </Tab>
-            <Tab text="Autók">
+            <Tab text="Új alkalmazott">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="carTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
-                          <columns>
-                            <TableColumn prefWidth="75.0" text="C1" />
-                            <TableColumn prefWidth="75.0" text="C2" />
-                          </columns>
-                        </TableView>
+                        <Button layoutX="251.0" layoutY="96.0" mnemonicParsing="false" onAction="#pickUpNewEmployee" text="Hozzáad" />
+                        <TextField fx:id="inputEmployeeName" layoutX="58.0" layoutY="10.0" prefHeight="25.0" prefWidth="255.0" />
+                        <Label layoutX="11.0" layoutY="14.0" text="Név" />
+                        <ChoiceBox fx:id="choiceJobs" layoutX="57.0" layoutY="50.0" prefHeight="25.0" prefWidth="256.0" />
+                        <Label layoutX="14.0" layoutY="54.0" text="Munka" />
+                        <CheckBox fx:id="checkBox24hInput" layoutX="58.0" layoutY="79.0" mnemonicParsing="false" text="24h" />
                      </children>
                   </AnchorPane>
               </content>
@@ -66,6 +56,30 @@
                      </children></AnchorPane>
               </content>
             </Tab>
+            <Tab text="Autók">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="carTable" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+                          <columns>
+                            <TableColumn prefWidth="75.0" text="C1" />
+                            <TableColumn prefWidth="75.0" text="C2" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab text="Sorsolas">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Button fx:id="btnClear" layoutX="31.0" layoutY="31.0" mnemonicParsing="false" onAction="#clear" text="Törlés" />
+                        <Button fx:id="btnGenerate" layoutX="86.0" layoutY="31.0" mnemonicParsing="false" onAction="#generate" text="Generálás" />
+                        <Button fx:id="btnSave" layoutX="163.0" layoutY="31.0" mnemonicParsing="false" onAction="#save" text="Mentés" />
+                     </children></AnchorPane>
+            </content>
+          </Tab>
         </tabs>
       </TabPane>
    </children>

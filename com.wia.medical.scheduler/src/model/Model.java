@@ -147,5 +147,9 @@ public class Model {
 	public MuszakLista getMuszakLista() {
 		return muszakok;
 	}
+	
+	public void addNewEmployee(Employee emp) {
+		employees.add(emp);
+	}
 
 }
