@@ -67,7 +67,7 @@ public class Muszak extends TreeItem<String> implements Comparable<Muszak> {
 
 	@Override
 	public int compareTo(Muszak m) {
-		return Integer.compare(day, m.getDay());
+		return Integer.compare(m.hashCode(), m.hashCode());
 	}
 
 	public boolean isNight() {
@@ -84,6 +84,15 @@ public class Muszak extends TreeItem<String> implements Comparable<Muszak> {
 
 	public void clearAllEmp() {
 		emps.clear();
+	}
+
+	@Override
+	public int hashCode() {
+		int additional = 1;
+		if (isNight()) {
+			additional += 1;
+		}
+		return day * 10 + additional;
 	}
 
 }

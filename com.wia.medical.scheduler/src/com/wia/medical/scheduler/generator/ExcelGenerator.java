@@ -118,59 +118,19 @@ public class ExcelGenerator {
 		}
 	}
 
+	/**
+	 * 
+	 * @param emp
+	 * @param cell
+	 * @param start
+	 *            true means arrive cell, false means go home cell.
+	 * @param actDay
+	 */
 	private void setCellValue(Employee emp, HSSFCell cell, boolean start, int actDay) {
-
-		List<Muszak> muszakok = emp.getMuszakokMap().get(actDay - 1);
-		Muszak night = foundNight(muszakok);
-		if (night != null) {
-			if (!start) {
-				cell.setCellValue(night.getTo());
-			} else {
-				cell.setCellValue("?");
-			}
-		} else {
-
-			muszakok = emp.getMuszakokMap().get(actDay);
-			if (muszakok != null) {
-				if (muszakok.size() == 1) {
-					Muszak m = muszakok.get(0);
-					if (m.isNight()) {
-						if (!start) {
-							cell.setCellValue(m.getFrom());
-						}
-					} else {
-						cell.setCellValue(start ? m.getFrom() : m.getTo());
-					}
-				} else {
-					if (muszakok.size() == 2) {
-						Muszak m = findNotNight(muszakok);
-						cell.setCellValue(start ? m.getFrom() : 24);
-					}
-				}
-			}
+		int value = emp.getTime(actDay, start);
+		if (value != -1) {
+			cell.setCellValue(value);
 		}
-	}
-
-	private Muszak foundNight(List<Muszak> muszakok) {
-		if (muszakok != null) {
-			for (Muszak m : muszakok) {
-				if (m.isNight()) {
-					return m;
-				}
-			}
-		}
-		return null;
-	}
-
-	private Muszak findNotNight(List<Muszak> muszakok) {
-		if (muszakok != null) {
-			for (Muszak m : muszakok) {
-				if (!m.isNight()) {
-					return m;
-				}
-			}
-		}
-		return null;
 	}
 
 	private void createHeaderRow(HSSFWorkbook wb, HSSFSheet sheet, int rowNum, int days) {

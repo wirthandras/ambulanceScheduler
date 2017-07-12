@@ -112,6 +112,7 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 			return false;
 		}
 
+		// TODO check next day too in case of night shift
 		if (!getHolidays().contains(uj.getDay())) {
 
 			List<Muszak> ordered = new ArrayList<Muszak>(muszakok);
@@ -202,4 +203,37 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 		muszakok.clear();
 	}
 
+	public int getTime(int day, boolean start) {
+
+		List<Muszak> actDayShifts = getMuszakokMap().get(day);
+		if (start) {
+			if (actDayShifts != null && actDayShifts.size() > 0) {
+				Collections.sort(actDayShifts);
+				Muszak m = actDayShifts.get(0);
+				return m.getFrom();
+			}
+		} else {
+			if (actDayShifts != null && actDayShifts.size() > 0) {
+				Collections.sort(actDayShifts, Comparator.reverseOrder());
+				Muszak m = actDayShifts.get(0);
+				if (m.isNight()) {
+					if (actDayShifts.size() == 2) {
+						return 24;
+					}
+				} else {
+					return m.getTo();
+				}
+			} else {
+				List<Muszak> previousDay = getMuszakokMap().get(day - 1);
+				if (previousDay != null) {
+					Collections.sort(previousDay, Comparator.reverseOrder());
+					Muszak previusShift = previousDay.get(0);
+					if (previusShift.isNight()) {
+						return previusShift.getTo();
+					}
+				}
+			}
+		}
+		return -1;
+	}
 }
