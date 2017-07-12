@@ -1,6 +1,7 @@
 package model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -96,14 +97,12 @@ public class Model {
 		}
 	}
 
-	private void createExcelFile(int daysInMonth, Map<IJob, List<Employee>> employees) {
+	private void createExcelFile(int daysInMonth, Map<IJob, List<Employee>> employees) throws IOException {
+		File file = new File("tesztBeosztas2.xls");
+
 		ExcelGenerator gen = new ExcelGenerator();
 		HSSFWorkbook workbook = gen.generate(daysInMonth, employees);
-		try {
-			workbook.write(new File("tesztBeosztas2.xls"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		workbook.write(file);
 	}
 
 	public List<Employee> getEmployees() {
@@ -140,14 +139,14 @@ public class Model {
 		alg.execute(muszakok, cars, employees);
 	}
 
-	public void save() {
+	public void save() throws IOException {
 		createExcelFile(daysInMonth, alg.getSeparatedEmployees());
 	}
 
 	public MuszakLista getMuszakLista() {
 		return muszakok;
 	}
-	
+
 	public void addNewEmployee(Employee emp) {
 		employees.add(emp);
 	}

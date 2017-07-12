@@ -72,11 +72,12 @@ public class AlgorithmPairing {
 				if (emp != null) {
 					m.addEmployee(emp);
 					emp.addMuszak(m);
-					if (emp.isService24h()) {
+					if (emp.isService24h() && !m.isNight()) {
 						Muszak m2 = muszakok.getAdjacentAfter(m);
 						if (m2 != null) {
 							Random r = new Random();
-							if (r.nextBoolean() && m2.missingJob().contains(emp.getJob()) && !emp.getHolidays().contains(m2.getDay())) {
+							if (r.nextBoolean() && m2.missingJob().contains(emp.getJob())
+									&& !emp.getHolidays().contains(m2.getDay())) {
 								m2.addEmployee(emp);
 								emp.addMuszak(m2);
 							}

@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -235,7 +237,13 @@ public class MainController {
 
 	@FXML
 	private void save() {
-		m.save();
+		try {
+			m.save();
+		} catch (FileNotFoundException e) {
+			showPopup("Fájl meg van nyitva, kérem csukja be!");
+		} catch (IOException e) {
+			showPopup("Fájl hiba");
+		}
 	}
 
 	@FXML
