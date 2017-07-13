@@ -204,8 +204,9 @@ public class MainController {
 
 		Set<Integer> holidays = emp.getHolidays();
 		Set<Integer> workDays = emp.getWorkDays();
+		Set<Integer> sicks = emp.getSicks();
 
-		picker.setDayCellFactory(createFactory(workDays, holidays));
+		picker.setDayCellFactory(createFactory(workDays, holidays, sicks));
 
 		pane.getChildren().clear();
 
@@ -214,7 +215,7 @@ public class MainController {
 		pane.getChildren().add(popupContent);
 	}
 
-	private Callback<DatePicker, DateCell> createFactory(Set<Integer> workDays, Set<Integer> holidays) {
+	private Callback<DatePicker, DateCell> createFactory(Set<Integer> workDays, Set<Integer> holidays, Set<Integer> sickDays) {
 
 		Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
 			public DateCell call(final DatePicker datePicker) {
@@ -227,6 +228,10 @@ public class MainController {
 						} else {
 							if (workDays.contains(item.getDayOfMonth())) {
 								setStyle("-fx-background-color: #ADD8E6;");
+							} else {
+								if(sickDays.contains(item.getDayOfMonth())) {
+									setStyle("-fx-background-color: #00FA9A;");
+								}
 							}
 						}
 
@@ -309,14 +314,28 @@ public class MainController {
 	}
 
 	@FXML
-	private DatePicker datePickerHoliday;
-
-	@FXML
 	private void pickUpNewHoliday() {
-		LocalDate date = datePickerHoliday.getValue();
+
+		LocalDate date = datePickerSkin.getBehavior().getControl().getValue();
 		int day = date.getDayOfMonth();
 
 		selectedEmployee.getHolidays().add(day);
+		setupGuiAccordingToEmployee(selectedEmployee);
+	}
+
+	@FXML
+	private void h24TickBoxPressed() {
+		boolean is24hSelected = h24.isSelected();
+		selectedEmployee.setService24h(is24hSelected);
+	}
+
+	@FXML
+	private void pickupSickDay() {
+
+		LocalDate date = datePickerSkin.getBehavior().getControl().getValue();
+		int day = date.getDayOfMonth();
+
+		selectedEmployee.getSicks().add(day);
 		setupGuiAccordingToEmployee(selectedEmployee);
 	}
 

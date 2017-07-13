@@ -100,14 +100,19 @@ public class ExcelGenerator {
 					if (j == days + 1) {
 						cell.setCellValue(emp.getHolidays().size() * 8);
 					} else {
-
-						if (emp.getHolidays().contains(j)) {
+						if (emp.getSicks().contains(j)) {
 							if (!start) {
-								cell.setCellValue("sz");
+								cell.setCellValue("B");
 							}
 						} else {
-							if (emp.getWorkDays().contains(j)) {
-								setCellValue(emp, cell, start, j);
+							if (emp.getHolidays().contains(j)) {
+								if (!start) {
+									cell.setCellValue("sz");
+								}
+							} else {
+								if (emp.getWorkDays().contains(j)) {
+									setCellValue(emp, cell, start, j);
+								}
 							}
 						}
 						setCellStyle(workbook, cell, j);

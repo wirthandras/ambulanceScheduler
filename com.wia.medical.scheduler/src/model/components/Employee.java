@@ -24,6 +24,7 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 	private boolean service24h;
 	private Set<Muszak> muszakok;
 	private Set<Integer> holidays;
+	private Set<Integer> sicks;
 
 	public Employee(String name, IJob qualification, boolean service24h) {
 		super();
@@ -33,6 +34,7 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 
 		this.muszakok = new HashSet<Muszak>();
 		this.holidays = new HashSet<Integer>();
+		this.sicks = new HashSet<Integer>();
 	}
 
 	public String getName() {
@@ -50,6 +52,10 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 
 	public boolean isService24h() {
 		return service24h;
+	}
+
+	public void setService24h(boolean service24h) {
+		this.service24h = service24h;
 	}
 
 	public void addMuszak(Muszak m) {
@@ -106,6 +112,14 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 		return holidays;
 	}
 
+	public Set<Integer> getSicks() {
+		return sicks;
+	}
+
+	public void setSicks(Set<Integer> sicks) {
+		this.sicks = sicks;
+	}
+
 	public boolean canAdd(Muszak uj) {
 
 		if (!job.accept(uj)) {
@@ -113,7 +127,7 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 		}
 
 		// TODO check next day too in case of night shift
-		if (!getHolidays().contains(uj.getDay())) {
+		if (!getHolidays().contains(uj.getDay()) && !getSicks().contains(uj.getDay())) {
 
 			List<Muszak> ordered = new ArrayList<Muszak>(muszakok);
 
@@ -217,8 +231,22 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 				Collections.sort(actDayShifts, Comparator.reverseOrder());
 				Muszak m = actDayShifts.get(0);
 				if (m.isNight()) {
-					if (actDayShifts.size() == 2) {
+					switch (actDayShifts.size()) {
+					case 2:
 						return 24;
+					case 1:
+					case 0:
+						List<Muszak> previousDay = getMuszakokMap().get(day - 1);
+						if (previousDay != null) {
+							Collections.sort(previousDay, Comparator.reverseOrder());
+							Muszak previusShift = previousDay.get(0);
+							if (previusShift.isNight()) {
+								return previusShift.getTo();
+							}
+						}
+						break;
+					default:
+						break;
 					}
 				} else {
 					return m.getTo();
