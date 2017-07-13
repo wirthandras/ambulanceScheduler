@@ -5,13 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
@@ -77,25 +73,6 @@ public class Model {
 		return sb.toString();
 	}
 
-	private void randomizeHolidays() {
-		int empSize = employees.size();
-
-		Random r = new Random();
-		int rHolidayForEmp = r.nextInt(empSize) / 3;
-		Collections.shuffle(employees);
-		for (int i = 0; i < rHolidayForEmp; i++) {
-			Employee emp = employees.get(i);
-
-			Set<Integer> holidays = new HashSet<Integer>();
-			int rHolidaysNumber = r.nextInt(3);
-			for (int j = 0; j < rHolidaysNumber; j++) {
-				int day = r.nextInt(muszakok.getDaysInMonth()) + 1;
-				holidays.add(day);
-			}
-			emp.addHolidays(holidays);
-		}
-	}
-
 	private void createExcelFile(int daysInMonth, Map<IJob, List<Employee>> employees) throws IOException {
 		File file = new File("tesztBeosztas2.xls");
 
@@ -118,7 +95,6 @@ public class Model {
 	}
 
 	public void clear() {
-		randomizeHolidays();
 
 		alg = new AlgorithmPairing();
 
@@ -132,8 +108,6 @@ public class Model {
 	}
 
 	public void generate() {
-		randomizeHolidays();
-
 		alg = new AlgorithmPairing();
 		alg.execute(muszakok, cars, employees);
 	}

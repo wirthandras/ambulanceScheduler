@@ -46,6 +46,8 @@ import model.components.Muszak;
 
 public class MainController {
 
+	private Employee selectedEmployee;
+
 	private Stage primaryStage;
 	private Model m;
 
@@ -178,8 +180,8 @@ public class MainController {
 			public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 				TreeItem<TreeItem<String>> treeItem = (TreeItem<TreeItem<String>>) newValue;
 				if (treeItem != null && treeItem.getValue() instanceof Employee) {
-					Employee emp = (Employee) treeItem.getValue();
-					setupGuiAccordingToEmployee(emp);
+					selectedEmployee = (Employee) treeItem.getValue();
+					setupGuiAccordingToEmployee(selectedEmployee);
 				}
 			}
 
@@ -304,6 +306,18 @@ public class MainController {
 		Scene dialogScene = new Scene(dialogVbox, 300, 200);
 		dialog.setScene(dialogScene);
 		dialog.show();
+	}
+
+	@FXML
+	private DatePicker datePickerHoliday;
+
+	@FXML
+	private void pickUpNewHoliday() {
+		LocalDate date = datePickerHoliday.getValue();
+		int day = date.getDayOfMonth();
+
+		selectedEmployee.getHolidays().add(day);
+		setupGuiAccordingToEmployee(selectedEmployee);
 	}
 
 }

@@ -25,6 +25,9 @@
                                  <children>
                                     <CheckBox fx:id="h24" layoutX="102.0" layoutY="44.0" mnemonicParsing="false" text="24 H" />
                                     <Pane fx:id="pane" layoutX="37.0" layoutY="72.0" prefHeight="200.0" prefWidth="200.0" />
+                                    <DatePicker fx:id="datePickerHoliday" layoutX="38.0" layoutY="308.0" />
+                                    <Label layoutX="38.0" layoutY="287.0" text="Új szabadság:" />
+                                    <Button layoutX="221.0" layoutY="308.0" mnemonicParsing="false" onAction="#pickUpNewHoliday" text="Hozzáad" />
                                  </children></AnchorPane>
                           </items>
                         </SplitPane>
