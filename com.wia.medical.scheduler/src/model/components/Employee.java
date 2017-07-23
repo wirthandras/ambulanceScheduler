@@ -1,5 +1,6 @@
 package model.components;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -263,5 +264,15 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 			}
 		}
 		return -1;
+	}
+
+	public void addSpecialShift(LocalDate date, int from, int to) {
+		if (date != null) {
+			int day = date.getDayOfMonth();
+
+			Muszak m = new Muszak(day, from, to, null);
+
+			addMuszak(m);
+		}
 	}
 }

@@ -22,6 +22,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -76,6 +77,15 @@ public class MainController {
 
 	@FXML
 	private CheckBox checkBox24hInput;
+
+	@FXML
+	private TextField specialShiftFrom;
+
+	@FXML
+	private TextField specialShiftTo;
+
+	@FXML
+	private DatePicker specialShiftDay;
 
 	public void setData(Model m, Stage primaryStage) {
 		this.m = m;
@@ -215,7 +225,8 @@ public class MainController {
 		pane.getChildren().add(popupContent);
 	}
 
-	private Callback<DatePicker, DateCell> createFactory(Set<Integer> workDays, Set<Integer> holidays, Set<Integer> sickDays) {
+	private Callback<DatePicker, DateCell> createFactory(Set<Integer> workDays, Set<Integer> holidays,
+			Set<Integer> sickDays) {
 
 		Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
 			public DateCell call(final DatePicker datePicker) {
@@ -229,7 +240,7 @@ public class MainController {
 							if (workDays.contains(item.getDayOfMonth())) {
 								setStyle("-fx-background-color: #ADD8E6;");
 							} else {
-								if(sickDays.contains(item.getDayOfMonth())) {
+								if (sickDays.contains(item.getDayOfMonth())) {
 									setStyle("-fx-background-color: #00FA9A;");
 								}
 							}
@@ -337,6 +348,25 @@ public class MainController {
 
 		selectedEmployee.getSicks().add(day);
 		setupGuiAccordingToEmployee(selectedEmployee);
+	}
+
+	@FXML
+	private void addSpecialShift() {
+		LocalDate specShiftDay = specialShiftDay.getValue();
+		// TODO use Spinner if possible
+		int from = getValue(specialShiftFrom);
+		int to = getValue(specialShiftTo);
+
+		selectedEmployee.addSpecialShift(specShiftDay, from, to);
+	}
+	
+	private int getValue(TextField tf) {
+		String fromText = tf.getText();
+		if (fromText.equals("")) {
+			fromText = tf.getPromptText();
+		}
+		return Integer.parseInt(fromText);
+
 	}
 
 }

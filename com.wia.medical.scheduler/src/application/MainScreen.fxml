@@ -23,10 +23,26 @@
                               </AnchorPane>
                             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="483.0" prefWidth="348.0">
                                  <children>
-                                    <CheckBox fx:id="h24" layoutX="102.0" layoutY="44.0" mnemonicParsing="false" onAction="#h24TickBoxPressed" text="24 H" />
-                                    <Pane fx:id="pane" layoutX="37.0" layoutY="72.0" prefHeight="200.0" prefWidth="200.0" />
-                                    <Button layoutX="256.0" layoutY="72.0" mnemonicParsing="false" onAction="#pickUpNewHoliday" text="Szabi" />
-                                    <Button layoutX="256.0" layoutY="105.0" mnemonicParsing="false" onAction="#pickupSickDay" text="Beteg" />
+                                    <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="582.0" prefWidth="388.0" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                      <items>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                             <children>
+                                                <Button layoutX="247.0" layoutY="45.0" mnemonicParsing="false" onAction="#pickupSickDay" text="Beteg" />
+                                                <Button layoutX="247.0" layoutY="14.0" mnemonicParsing="false" onAction="#pickUpNewHoliday" text="Szabi" />
+                                                <Pane fx:id="pane" layoutX="14.0" layoutY="13.0" prefHeight="237.0" prefWidth="227.0" />
+                                                <CheckBox fx:id="h24" layoutX="14.0" layoutY="256.0" mnemonicParsing="false" onAction="#h24TickBoxPressed" text="24 H" />
+                                             </children>
+                                          </AnchorPane>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="152.0" prefWidth="386.0">
+                                             <children>
+                                                <Label layoutX="14.0" layoutY="14.0" text="Egyedi műszakok:" />
+                                                <DatePicker fx:id="specialShiftDay" layoutX="14.0" layoutY="38.0" />
+                                                <Button layoutX="193.0" layoutY="38.0" mnemonicParsing="false" onAction="#addSpecialShift" text="Hozzáad" />
+                                                <TextField fx:id="specialShiftFrom" layoutX="263.0" layoutY="38.0" prefHeight="25.0" prefWidth="32.0" promptText="8" />
+                                                <TextField fx:id="specialShiftTo" layoutX="298.0" layoutY="38.0" maxWidth="44.0" prefHeight="25.0" prefWidth="32.0" promptText="12" />
+                                             </children></AnchorPane>
+                                      </items>
+                                    </SplitPane>
                                  </children></AnchorPane>
                           </items>
                         </SplitPane>
