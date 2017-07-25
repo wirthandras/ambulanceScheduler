@@ -71,7 +71,7 @@ public class ExcelGenerator {
 	}
 
 	private void createEmployeeTable(HSSFWorkbook workbook, HSSFSheet sheet, int actRow, List<Employee> employees,
-			int days) {
+			int day) {
 		for (int i = 0; i < employees.size(); i++) {
 
 			HSSFRow rowStart = sheet.createRow(actRow);
@@ -81,23 +81,23 @@ public class ExcelGenerator {
 
 			Employee emp = employees.get(i);
 
-			oneRow(workbook, rowStart, emp, days, true);
-			oneRow(workbook, rowFinish, emp, days, false);
+			oneRow(workbook, rowStart, emp, day, true);
+			oneRow(workbook, rowFinish, emp, day, false);
 
 		}
 	}
 
-	private void oneRow(HSSFWorkbook workbook, HSSFRow row, Employee emp, int days, boolean start) {
-		for (int j = 0; j <= days + 2; j++) {
+	private void oneRow(HSSFWorkbook workbook, HSSFRow row, Employee emp, int day, boolean start) {
+		for (int j = 0; j <= day + 2; j++) {
 			HSSFCell cell = row.createCell(j);
 
 			if (j == 0) {
 				cell.setCellValue(emp.getName());
 			} else {
-				if (j == days + 2) {
+				if (j == day + 2) {
 					cell.setCellValue(emp.sumWorkingHours());
 				} else {
-					if (j == days + 1) {
+					if (j == day + 1) {
 						cell.setCellValue(emp.getHolidays().size() * 8);
 					} else {
 						if (emp.getSicks().contains(j)) {
