@@ -86,6 +86,9 @@ public class MainController {
 
 	@FXML
 	private DatePicker specialShiftDay;
+	
+	@FXML
+	private TextField inputOtherJob;
 
 	public void setData(Model m, Stage primaryStage) {
 		this.m = m;
@@ -352,6 +355,9 @@ public class MainController {
 
 	@FXML
 	private void addSpecialShift() {
+		
+		String otherJob = getTextValue(inputOtherJob);
+		
 		LocalDate specShiftDay = specialShiftDay.getValue();
 		// TODO use Spinner if possible
 		int from = getValue(specialShiftFrom);
@@ -361,11 +367,15 @@ public class MainController {
 	}
 	
 	private int getValue(TextField tf) {
+		return Integer.parseInt(getTextValue(tf));
+	}
+	
+	private String getTextValue(TextField tf) {
 		String fromText = tf.getText();
 		if (fromText.equals("")) {
 			fromText = tf.getPromptText();
 		}
-		return Integer.parseInt(fromText);
+		return fromText;
 
 	}
 

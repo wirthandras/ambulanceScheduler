@@ -40,6 +40,8 @@
                                                 <Button layoutX="193.0" layoutY="38.0" mnemonicParsing="false" onAction="#addSpecialShift" text="Hozzáad" />
                                                 <TextField fx:id="specialShiftFrom" layoutX="263.0" layoutY="38.0" prefHeight="25.0" prefWidth="32.0" promptText="8" />
                                                 <TextField fx:id="specialShiftTo" layoutX="298.0" layoutY="38.0" maxWidth="44.0" prefHeight="25.0" prefWidth="32.0" promptText="12" />
+                                                <TextField fx:id="inputOtherJob" layoutX="123.0" layoutY="71.0" prefHeight="25.0" prefWidth="172.0" promptText="Adminisztratív" />
+                                                <Label layoutX="14.0" layoutY="75.0" text="Egyéb munkakör:" />
                                              </children></AnchorPane>
                                       </items>
                                     </SplitPane>
