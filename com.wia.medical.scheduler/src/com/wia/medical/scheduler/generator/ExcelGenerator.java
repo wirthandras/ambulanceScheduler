@@ -74,18 +74,53 @@ public class ExcelGenerator {
 			int day) {
 		for (int i = 0; i < employees.size(); i++) {
 
+			Employee emp = employees.get(i);
+			if (emp.hasSpecialShift()) {
+				HSSFRow specialShiftRowStart = sheet.createRow(actRow);
+				actRow++;
+				HSSFRow specialShiftRowFinish = sheet.createRow(actRow);
+				actRow++;
+				specialShiftRow(workbook, specialShiftRowStart, emp, day, true);
+				specialShiftRow(workbook, specialShiftRowFinish, emp, day, false);
+			}
+
 			HSSFRow rowStart = sheet.createRow(actRow);
 			actRow++;
 			HSSFRow rowFinish = sheet.createRow(actRow);
 			actRow++;
-
-			Employee emp = employees.get(i);
 
 			oneRow(workbook, rowStart, emp, day, true);
 			oneRow(workbook, rowFinish, emp, day, false);
 
 		}
 	}
+
+	// TODO
+	private void specialShiftRow(HSSFWorkbook workbook, HSSFRow row, Employee emp, int day, boolean start) {
+		for (int j = 0; j <= day + 2; j++) {
+			HSSFCell cell = row.createCell(j);
+
+			if (j == 0) {
+				cell.setCellValue(emp.getName() + " - " + emp.getSpecialShift());
+			} else {
+				if (j == day + 2) {
+					cell.setCellValue(emp.sumSpecialWorkingHours());
+				} else {
+					if (j == day + 1) {
+						cell.setCellValue(0);
+					} else {
+						if (emp.getWorkDays().contains(j)) {
+							setSpecialShiftCellValue(emp, cell, start, j);
+						}
+						setCellStyle(workbook, cell, j);
+					}
+				}
+			}
+
+		}
+	}
+	
+	
 
 	private void oneRow(HSSFWorkbook workbook, HSSFRow row, Employee emp, int day, boolean start) {
 		for (int j = 0; j <= day + 2; j++) {
@@ -110,7 +145,7 @@ public class ExcelGenerator {
 									cell.setCellValue("sz");
 								}
 							} else {
-								if (emp.getWorkDays().contains(j)) {
+								if (emp.isNormalShiftDay(j)) {
 									setCellValue(emp, cell, start, j);
 								}
 							}
@@ -120,6 +155,20 @@ public class ExcelGenerator {
 				}
 			}
 
+		}
+	}
+
+	private void setSpecialShiftCellValue(Employee emp, HSSFCell cell, boolean start, int actDay) {
+
+		Map<Integer, List<Muszak>> map = emp.getMuszakokMap();
+		if (map != null && map.containsKey(actDay)) {
+			Muszak m = map.get(actDay).get(0);
+			if (m.getCarType() == null) {
+				int value = start ? m.getFrom() : m.getTo();
+				if (value != -1) {
+					cell.setCellValue(value);
+				}
+			}
 		}
 	}
 
@@ -195,7 +244,7 @@ public class ExcelGenerator {
 	}
 
 	private void mergeCellsForEmployee(HSSFSheet sheet, int numberOfEmployees, int column) {
-		for (int i = 0; i < numberOfEmployees; i++) {
+		for (int i = 0; i < numberOfEmployees + 2; i++) {
 			int rowIndex = i * 2 + 1;
 			sheet.addMergedRegion(new CellRangeAddress(rowIndex, rowIndex + 1, column, column));
 		}

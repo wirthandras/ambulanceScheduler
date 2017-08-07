@@ -27,6 +27,8 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 	private Set<Integer> holidays;
 	private Set<Integer> sicks;
 
+	private String specialShiftName;
+
 	public Employee(String name, IJob qualification, boolean service24h) {
 		super();
 		this.name = name;
@@ -36,6 +38,19 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 		this.muszakok = new HashSet<Muszak>();
 		this.holidays = new HashSet<Integer>();
 		this.sicks = new HashSet<Integer>();
+	}
+
+	public String getSpecialShift() {
+		return specialShiftName;
+	}
+
+	public boolean hasSpecialShift() {
+		for (Muszak m : muszakok) {
+			if (m.getCarType() == null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public String getName() {
@@ -196,6 +211,16 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 		return sum;
 	}
 
+	public int sumSpecialWorkingHours() {
+		int sum = 0;
+		for (Muszak m : muszakok) {
+			if (m.getCarType() == null) {
+				sum += m.duration();
+			}
+		}
+		return sum;
+	}
+
 	private boolean checkSunday(Muszak uj, Muszak utolso) {
 
 		if (uj.getDay() - utolso.getDay() == 1) {
@@ -216,6 +241,25 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 
 	public void clearShifts() {
 		muszakok.clear();
+	}
+
+	public boolean isNormalShiftDay(int day) {
+
+		if (getWorkDays().contains(day)) {
+			List<Muszak> mList = getMuszakokMap().get(day);
+			if (mList != null) {
+				for (Muszak m : mList) {
+					if (m.getCarType() == null) {
+						return false;
+					}
+				}
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
 	}
 
 	public int getTime(int day, boolean start) {
@@ -266,7 +310,8 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 		return -1;
 	}
 
-	public void addSpecialShift(LocalDate date, int from, int to) {
+	public void addSpecialShift(String specialShiftName, LocalDate date, int from, int to) {
+		this.specialShiftName = specialShiftName;
 		if (date != null) {
 			int day = date.getDayOfMonth();
 

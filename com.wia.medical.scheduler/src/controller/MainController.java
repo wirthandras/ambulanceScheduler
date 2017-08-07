@@ -363,7 +363,7 @@ public class MainController {
 		int from = getValue(specialShiftFrom);
 		int to = getValue(specialShiftTo);
 
-		selectedEmployee.addSpecialShift(specShiftDay, from, to);
+		selectedEmployee.addSpecialShift(otherJob, specShiftDay, from, to);
 	}
 	
 	private int getValue(TextField tf) {

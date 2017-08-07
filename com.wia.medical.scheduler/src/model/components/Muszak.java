@@ -94,5 +94,9 @@ public class Muszak extends TreeItem<String> implements Comparable<Muszak> {
 		}
 		return day * 10 + additional;
 	}
+	
+	public ECarType getCarType() {
+		return carType;
+	}
 
 }
