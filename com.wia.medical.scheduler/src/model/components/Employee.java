@@ -1,5 +1,6 @@
 package model.components;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -145,26 +146,55 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 		// TODO check next day too in case of night shift
 		if (!getHolidays().contains(uj.getDay()) && !getSicks().contains(uj.getDay())) {
 
-			List<Muszak> ordered = new ArrayList<Muszak>(muszakok);
+			if (!checkContinousHoliday(uj)) {
 
-			if (ordered.size() > 0) {
+				List<Muszak> ordered = new ArrayList<Muszak>(muszakok);
 
-				Collections.sort(ordered, Comparator.reverseOrder());
+				if (ordered.size() > 0) {
 
-				Muszak utolso = ordered.get(0);
+					Collections.sort(ordered, Comparator.reverseOrder());
 
-				if (utolso.getDay() == uj.getDay()) {
-					return false;
+					Muszak utolso = ordered.get(0);
+
+					if (utolso.getDay() == uj.getDay()) {
+						return false;
+
+					} else {
+						return diff(uj, utolso);
+					}
 
 				} else {
-					return diff(uj, utolso);
+					return checkMaxInMonth();
 				}
-
 			} else {
-				return checkMaxInMonth();
+				return false;
 			}
 		} else {
 			return false;
+		}
+	}
+
+	private boolean checkContinousHoliday(Muszak uj) {
+		int day = uj.getDay();
+		LocalDate now = LocalDate.now();
+		LocalDate now2 = LocalDate.of(now.getYear(), now.getMonthValue(), day);
+
+		if (now2.getDayOfWeek().equals(DayOfWeek.SATURDAY)) {
+			if (getHolidays().contains(day - 1) && getHolidays().contains(day + 2)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			if (now2.getDayOfWeek().equals(DayOfWeek.SUNDAY)) {
+				if (getHolidays().contains(day - 2) && getHolidays().contains(day + 1)) {
+					return true;
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
 		}
 	}
 
