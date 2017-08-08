@@ -86,7 +86,7 @@ public class MainController {
 
 	@FXML
 	private DatePicker specialShiftDay;
-	
+
 	@FXML
 	private TextField inputOtherJob;
 
@@ -237,18 +237,20 @@ public class MainController {
 					@Override
 					public void updateItem(LocalDate item, boolean empty) {
 						super.updateItem(item, empty);
-						if (holidays.contains(item.getDayOfMonth())) {
-							setStyle("-fx-background-color: #ff4444;");
-						} else {
-							if (workDays.contains(item.getDayOfMonth())) {
-								setStyle("-fx-background-color: #ADD8E6;");
+						LocalDate actual = LocalDate.now();
+						if (actual.getMonthValue() == item.getMonthValue()) {
+							if (holidays.contains(item.getDayOfMonth())) {
+								setStyle("-fx-background-color: #ff4444;");
 							} else {
-								if (sickDays.contains(item.getDayOfMonth())) {
-									setStyle("-fx-background-color: #00FA9A;");
+								if (workDays.contains(item.getDayOfMonth())) {
+									setStyle("-fx-background-color: #ADD8E6;");
+								} else {
+									if (sickDays.contains(item.getDayOfMonth())) {
+										setStyle("-fx-background-color: #00FA9A;");
+									}
 								}
 							}
 						}
-
 					}
 				};
 			}
@@ -355,21 +357,22 @@ public class MainController {
 
 	@FXML
 	private void addSpecialShift() {
-		
+
 		String otherJob = getTextValue(inputOtherJob);
-		
+
 		LocalDate specShiftDay = specialShiftDay.getValue();
 		// TODO use Spinner if possible
 		int from = getValue(specialShiftFrom);
 		int to = getValue(specialShiftTo);
 
 		selectedEmployee.addSpecialShift(otherJob, specShiftDay, from, to);
+		setupGuiAccordingToEmployee(selectedEmployee);
 	}
-	
+
 	private int getValue(TextField tf) {
 		return Integer.parseInt(getTextValue(tf));
 	}
-	
+
 	private String getTextValue(TextField tf) {
 		String fromText = tf.getText();
 		if (fromText.equals("")) {
