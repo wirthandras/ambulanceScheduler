@@ -1,5 +1,6 @@
 package model.algorithms;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -10,11 +11,12 @@ import jobs.IJob;
 import model.components.Employee;
 import model.components.Muszak;
 
-public class ShuffleAlgorithm implements IEmployeeGeneratorAlgorithm {
+public class ShuffleAlgorithm extends AbstractAlgorithm implements IEmployeeGeneratorAlgorithm {
 	
 	private Map<IJob, List<Employee>> separatedEmployees;
 	
-	public ShuffleAlgorithm(Map<IJob, List<Employee>> separatedEmployees) {
+	public ShuffleAlgorithm(Map<IJob, List<Employee>> separatedEmployees, LocalDate calculationDate) {
+		super(calculationDate);
 		this.separatedEmployees = separatedEmployees;
 	}
 	
@@ -42,8 +44,8 @@ public class ShuffleAlgorithm implements IEmployeeGeneratorAlgorithm {
 		int i = 0;
 		while (i < employees.size()) {
 			Employee emp = employees.get(i);
-
-			if (emp.canAdd(m)) {
+			
+			if (emp.canAdd(m) && canAdd(emp)) {
 				return emp;
 			}
 

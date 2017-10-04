@@ -2,10 +2,9 @@ package model;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +25,7 @@ public class Model {
 	private List<Employee> employees;
 	private AlgorithmPairing alg;
 	private int daysInMonth;
+	private LocalDate date;
 
 	public AlgorithmPairing getAlg() {
 		return alg;
@@ -33,9 +33,10 @@ public class Model {
 
 	public Model() {
 
-		Calendar mycal = new GregorianCalendar();
+		date = LocalDate.now();
 
-		daysInMonth = mycal.getActualMaximum(Calendar.DAY_OF_MONTH);
+		boolean leapYear = date.isLeapYear();
+		daysInMonth = date.getMonth().length(leapYear);
 
 		cars = new ArrayList<>();
 
@@ -109,7 +110,7 @@ public class Model {
 
 	public void generate() {
 		alg = new AlgorithmPairing();
-		alg.execute(muszakok, cars, employees);
+		alg.execute(muszakok, cars, employees, date);
 	}
 
 	public void save() throws IOException {

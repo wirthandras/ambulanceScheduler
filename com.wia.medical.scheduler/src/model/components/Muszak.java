@@ -83,7 +83,9 @@ public class Muszak extends TreeItem<String> implements Comparable<Muszak> {
 	}
 
 	public void clearAllEmp() {
-		emps.clear();
+		if (emps != null) {
+			emps.clear();
+		}
 	}
 
 	@Override
@@ -94,7 +96,7 @@ public class Muszak extends TreeItem<String> implements Comparable<Muszak> {
 		}
 		return day * 10 + additional;
 	}
-	
+
 	public ECarType getCarType() {
 		return carType;
 	}

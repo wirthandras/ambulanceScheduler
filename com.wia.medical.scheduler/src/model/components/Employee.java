@@ -18,9 +18,6 @@ import jobs.IJob;
 
 public class Employee extends TreeItem<String> implements Comparable<Employee> {
 
-	private static final int maxInMonth = 168;
-	private static final int holidayInHour = 8;
-
 	private String name;
 	private IJob job;
 	private boolean service24h;
@@ -136,7 +133,7 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 	public void setSicks(Set<Integer> sicks) {
 		this.sicks = sicks;
 	}
-	
+
 	public void clear(int day) {
 		this.holidays.remove(day);
 		this.sicks.remove(day);
@@ -169,7 +166,7 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 					}
 
 				} else {
-					return checkMaxInMonth();
+					return true;
 				}
 			} else {
 				return false;
@@ -212,30 +209,18 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 			int minimalPause = 12;
 
 			if (uj.getDay() > utolso.getDay() + 1) {
-				return checkMaxInMonth();
+				return true;
 			} else {
 				if (uj.getDay() == utolso.getDay() + 1) {
 
 					int val = (utolso.getTo() + minimalPause) % 24;
 
-					if (uj.getFrom() >= val) {
-						return checkMaxInMonth();
-					} else {
-						return false;
-					}
-
+					return uj.getFrom() >= val;
 				} else {
 					return false;
 				}
 			}
 		}
-	}
-
-	// TODO tmp
-	private boolean checkMaxInMonth() {
-		int sum = sumWorkingHours();
-		int holidayHours = getHolidays().size() * holidayInHour;
-		return sum + holidayHours < maxInMonth;
 	}
 
 	public int sumWorkingHours() {

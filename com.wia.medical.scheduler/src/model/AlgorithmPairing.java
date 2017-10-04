@@ -1,5 +1,6 @@
 package model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +23,11 @@ public class AlgorithmPairing {
 
 	private Map<IJob, List<Employee>> separatedEmployees;
 
-	public void execute(MuszakLista muszakok, List<Car> cars, List<Employee> employees) {
+	public void execute(MuszakLista muszakok, List<Car> cars, List<Employee> employees, LocalDate date) {
 
 		separateEmployees(employees);
 
-		assignEmpToMuszak(muszakok);
+		assignEmpToMuszak(muszakok, date);
 
 	}
 
@@ -60,10 +61,10 @@ public class AlgorithmPairing {
 		}
 	}
 
-	private void assignEmpToMuszak(MuszakLista muszakok) {
+	private void assignEmpToMuszak(MuszakLista muszakok, LocalDate date) {
 		List<Muszak> msz = muszakok.getMuszakok();
 		
-		IEmployeeGeneratorAlgorithm gen = new ShuffleAlgorithm(separatedEmployees);
+		IEmployeeGeneratorAlgorithm gen = new ShuffleAlgorithm(separatedEmployees, date);
 		
 		for (Muszak m : msz) {
 
