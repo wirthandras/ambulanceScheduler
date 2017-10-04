@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 
 import model.components.Employee;
 
-public abstract class AbstractAlgorithm {
+public class AbstractAlgorithm {
 	
 	private static final int oneWorkingDayInHour = 8;
 	
@@ -17,7 +17,7 @@ public abstract class AbstractAlgorithm {
 		this.calculationDate = calculationDate;
 	}
 
-	private int getMonthlyRequiredWorkingHours() {
+	int getMonthlyRequiredWorkingHours() {
 		int sumHours = 0;
 		boolean isLeapYear = calculationDate.isLeapYear();
 		Month m = calculationDate.getMonth();
