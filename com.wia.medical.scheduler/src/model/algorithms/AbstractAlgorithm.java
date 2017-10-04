@@ -9,7 +9,7 @@ import model.components.Employee;
 
 public abstract class AbstractAlgorithm {
 	
-	private static final int holidayInHour = 8;
+	private static final int oneWorkingDayInHour = 8;
 	
 	protected LocalDate calculationDate;
 	
@@ -27,7 +27,7 @@ public abstract class AbstractAlgorithm {
 			mycal.set(Calendar.DAY_OF_MONTH, i);
 			int dayOfWeek = mycal.get(Calendar.DAY_OF_WEEK);
 			if(Calendar.SATURDAY != dayOfWeek && Calendar.SUNDAY != dayOfWeek) {
-				sumHours += holidayInHour;
+				sumHours += oneWorkingDayInHour;
 			}
 		}		
 		return sumHours;
@@ -35,7 +35,7 @@ public abstract class AbstractAlgorithm {
 
 	protected boolean canAdd(Employee emp) {
 		int workingHours = emp.sumWorkingHours();
-		int holidayHours = emp.getHolidays().size() * holidayInHour;
+		int holidayHours = emp.getHolidays().size() * oneWorkingDayInHour;
 		int sum = workingHours + holidayHours;
 		return sum < getMonthlyRequiredWorkingHours();
 	}
