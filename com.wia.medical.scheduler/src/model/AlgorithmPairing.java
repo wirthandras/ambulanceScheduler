@@ -1,7 +1,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +12,8 @@ import jobs.Driver;
 import jobs.IJob;
 import jobs.JobFactory;
 import jobs.Mentotiszt;
+import model.algorithms.IEmployeeGeneratorAlgorithm;
+import model.algorithms.ShuffleAlgorithm;
 import model.components.Car;
 import model.components.Employee;
 import model.components.Muszak;
@@ -61,65 +62,40 @@ public class AlgorithmPairing {
 
 	private void assignEmpToMuszak(MuszakLista muszakok) {
 		List<Muszak> msz = muszakok.getMuszakok();
+		
+		IEmployeeGeneratorAlgorithm gen = new ShuffleAlgorithm(separatedEmployees);
+		
 		for (Muszak m : msz) {
 
 			Set<IJob> missingJobs = m.missingJob();
 
 			for (IJob j : missingJobs) {
 
-				Employee emp = getAnEmployee(j, m);
+				Employee emp = gen.getAnEmployee(j, m);
 
 				if (emp != null) {
 					m.addEmployee(emp);
 					emp.addMuszak(m);
-					if (emp.isService24h() && !m.isNight()) {
-						Muszak m2 = muszakok.getAdjacentAfter(m);
-						if (m2 != null) {
-							Random r = new Random();
-							if (r.nextBoolean() && m2.missingJob().contains(emp.getJob())
-									&& !emp.getHolidays().contains(m2.getDay())) {
-								m2.addEmployee(emp);
-								emp.addMuszak(m2);
-							}
-
-						}
-					}
+					
+					secondShift(muszakok, m, emp);
 				}
 			}
 		}
 	}
+	
+	private void secondShift(MuszakLista muszakok, Muszak m, Employee emp) { 
+		if (emp.isService24h() && !m.isNight()) {
+			Muszak m2 = muszakok.getAdjacentAfter(m);
+			if (m2 != null) {
+				Random r = new Random();
+				if (r.nextBoolean() && m2.missingJob().contains(emp.getJob())
+						&& !emp.getHolidays().contains(m2.getDay())) {
+					m2.addEmployee(emp);
+					emp.addMuszak(m2);
+				}
 
-	private Employee getAnEmployee(IJob j, Muszak m) {
-		List<Employee> emps = separatedEmployees.get(j);
-		List<Employee> employees = new ArrayList<>(emps);
-
-		if (employees != null && employees.size() > 0) {
-
-			Random r = new Random();
-			int rValue = r.nextInt(30);
-
-			Collections.shuffle(employees, new Random(rValue));
-
-			Employee emp = getFirstNotOnHoliday(m, employees);
-
-			return emp;
-		} else {
-			return null;
-		}
-	}
-
-	private Employee getFirstNotOnHoliday(Muszak m, List<Employee> employees) {
-		int i = 0;
-		while (i < employees.size()) {
-			Employee emp = employees.get(i);
-
-			if (emp.canAdd(m)) {
-				return emp;
 			}
-
-			i++;
 		}
-		return null;
 	}
 
 }

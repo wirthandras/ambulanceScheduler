@@ -136,6 +136,11 @@ public class Employee extends TreeItem<String> implements Comparable<Employee> {
 	public void setSicks(Set<Integer> sicks) {
 		this.sicks = sicks;
 	}
+	
+	public void clear(int day) {
+		this.holidays.remove(day);
+		this.sicks.remove(day);
+	}
 
 	public boolean canAdd(Muszak uj) {
 

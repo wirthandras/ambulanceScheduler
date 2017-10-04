@@ -382,4 +382,13 @@ public class MainController {
 
 	}
 
+	@FXML
+	private void btnClearPressed() {
+		LocalDate date = datePickerSkin.getBehavior().getControl().getValue();
+		int day = date.getDayOfMonth();
+
+		selectedEmployee.clear(day);
+		setupGuiAccordingToEmployee(selectedEmployee);
+	}
+
 }
