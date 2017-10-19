@@ -1,4 +1,4 @@
 language: java
-script:    
+install:    
   - cd com.wia.medical.scheduler
 ant test
