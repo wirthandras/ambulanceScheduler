@@ -1,4 +1,4 @@
 language: java
 script:    
-  - cd "com.wia.medical.scheduler"
+  - cd com.wia.medical.scheduler
 ant test
